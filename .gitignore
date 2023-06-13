@@ -1,10 +1,14 @@
 # files
 .vscode
-.env
-.env.local
 package-lock.json
 yarn.lock
 
 # folders
 build
 node_modules
+
+# env files
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
