@@ -11,10 +11,13 @@
     "dev": "ts-node-esm src/main.ts",
     "start": "node build/main.js",
     "watch": "nodemon --exec ts-node-esm src/main.ts",
-    "dc-up": "docker-compose up -d",
-    "dc-down": "docker-compose down",
-    "dc-restart": "docker-compose restart",
-    "dc-logs": "docker-compose logs -f"
+    "dc-build": "docker compose build",
+    "dc-up": "docker compose up -d",
+    "dc-down": "docker compose down",
+    "dc-restart": "docker compose restart",
+    "dc-logs": "docker compose logs -f",
+    "ts-standard": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command .\\node_modules\\.bin\\ts-standard.ps1",
+    "ts-standard-fix": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command .\\node_modules\\.bin\\ts-standard.ps1 --fix"
   },
   "dependencies": {
     "@discordx/importer": "^1.1.10",
