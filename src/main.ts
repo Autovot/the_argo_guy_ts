@@ -37,9 +37,9 @@ bot.once('ready', async () => {
   // This is useful when moving from guild commands to global commands
   // It must only be executed once
   //
-  //  await bot.clearApplicationCommands(
-  //    ...bot.guilds.cache.map((g) => g.id)
-  //  );
+  // await bot.clearApplicationCommands(
+  //   ...bot.guilds.cache.map((g) => g.id)
+  // )
 
   console.log('Bot started')
 })
@@ -52,7 +52,7 @@ bot.on('messageCreate', (message: Message) => {
   bot.executeCommand(message)
 })
 
-async function run () {
+async function run (): Promise<void> | never {
   // The following syntax should be used in the commonjs environment
   //
   // await importx(__dirname + "/{events,commands}/**/*.{ts,js}");
@@ -61,12 +61,13 @@ async function run () {
   await importx(`${dirname(import.meta.url)}/{events,commands}/**/*.{ts,js}`)
 
   // Let's start the bot
-  if (!process.env.BOT_TOKEN) {
+  const token = process.env.BOT_TOKEN
+  if (token === undefined) {
     throw Error('Could not find BOT_TOKEN in your environment')
   }
 
   // Log in with your bot token
-  await bot.login(process.env.BOT_TOKEN)
+  await bot.login(token)
 }
 
-run()
+await run()
