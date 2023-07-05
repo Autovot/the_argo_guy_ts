@@ -52,7 +52,7 @@ bot.on('messageCreate', (message: Message) => {
   bot.executeCommand(message)
 })
 
-async function run (): Promise<void> | never {
+async function run(): Promise<void> | never {
   // The following syntax should be used in the commonjs environment
   //
   // await importx(__dirname + "/{events,commands}/**/*.{ts,js}");
