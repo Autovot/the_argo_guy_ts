@@ -2,7 +2,7 @@ import { dirname, importx } from '@discordx/importer'
 import type { Interaction, Message } from 'discord.js'
 import { IntentsBitField } from 'discord.js'
 import { Client } from 'discordx'
-import('dotenv/config')
+import { config } from 'dotenv'
 
 export const bot = new Client({
   // To use only guild command
@@ -48,11 +48,11 @@ bot.on('interactionCreate', (interaction: Interaction) => {
   bot.executeInteraction(interaction)
 })
 
-bot.on('messageCreate', (message: Message) => {
-  bot.executeCommand(message)
+bot.on('messageCreate', async (message: Message) => {
+  await bot.executeCommand(message)
 })
 
-async function run(): Promise<void> | never {
+async function run (): Promise<void> | never {
   // The following syntax should be used in the commonjs environment
   //
   // await importx(__dirname + "/{events,commands}/**/*.{ts,js}");
@@ -61,13 +61,11 @@ async function run(): Promise<void> | never {
   await importx(`${dirname(import.meta.url)}/{events,commands}/**/*.{ts,js}`)
 
   // Let's start the bot
-  const token = process.env.BOT_TOKEN
-  if (token === undefined) {
-    throw Error('Could not find BOT_TOKEN in your environment')
-  }
+  const TOKEN = process.env.BOT_TOKEN
+  if (!TOKEN) throw Error('Could not find BOT_TOKEN in your environment')
 
-  // Log in with your bot token
-  await bot.login(token)
+  // Log in with your bot TOKEN
+  await bot.login(TOKEN)
 }
 
 await run()

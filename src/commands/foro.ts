@@ -1,28 +1,31 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, CommandInteraction, EmbedBuilder, MessageActionRowComponentBuilder } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, CommandInteraction, EmbedBuilder, MessageActionRowComponentBuilder, GuildForumThreadManager } from 'discord.js'
 import { ButtonComponent, Discord, Slash } from 'discordx'
 
 @Discord()
 export class setupShop {
   @ButtonComponent({ id: 'thread' })
-  handlerHello (interaction: ButtonInteraction): void {
+  async handlerHello (interaction: ButtonInteraction): Promise<void> {
     const userPost = interaction.user
-    interaction.message.startThread({
+    await interaction.message.startThread({
       name: `Test ${userPost.username}`
     })
     console.log()
-    interaction.deferUpdate() // <- Esto solo funcioan en botones y menus
-
-
+    await interaction.deferUpdate() // <- Esto solo funcioan en botones y menus
   }
 
   @ButtonComponent({ id: 'forum' })
-  handlerForum (interaction: ButtonInteraction): void {
-    interaction.reply(':smile:')
-    // interaction.guild?.channels.cache.get('1125577871327514654')?.setName('Test')
+  async handlerForum (interaction: ButtonInteraction): Promise<void> {
+    // const userPost = interaction.user
+    const CHANNEL_ID = process.env.BOT_TOKEN
+    if (!CHANNEL_ID) throw Error('Could not find CHANNEL_ID in your environment')
+    // const forumGet = interaction.client.channels.cache.get(forumID)
+
+
+    await interaction.deferUpdate()
   }
 
   @Slash({ description: 'setup' })
-  setup (interaction: CommandInteraction): void {
+  async setup (interaction: CommandInteraction): Promise<void> {
     const setupEmbed = new EmbedBuilder()
       .setTitle('Example Embed')
       .setDescription('This is an embed message.')
@@ -38,7 +41,7 @@ export class setupShop {
       new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
         btn, btnForum
       )
-    interaction.reply({
+    await interaction.reply({
       embeds: [setupEmbed],
       components: [buttonRow]
     })
