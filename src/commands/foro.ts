@@ -1,5 +1,6 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, CommandInteraction, EmbedBuilder, MessageActionRowComponentBuilder, GuildForumThreadManager } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, CommandInteraction, EmbedBuilder, MessageActionRowComponentBuilder, REST } from 'discord.js'
 import { ButtonComponent, Discord, Slash } from 'discordx'
+import('dotenv/config')
 
 @Discord()
 export class setupShop {
@@ -15,12 +16,28 @@ export class setupShop {
 
   @ButtonComponent({ id: 'forum' })
   async handlerForum (interaction: ButtonInteraction): Promise<void> {
-    // const userPost = interaction.user
-    const CHANNEL_ID = process.env.BOT_TOKEN
-    if (!CHANNEL_ID) throw Error('Could not find CHANNEL_ID in your environment')
-    // const forumGet = interaction.client.channels.cache.get(forumID)
+    const userPost = interaction.user
+    const TOKEN = process.env.BOT_TOKEN
+    if (TOKEN === undefined) throw Error('Could not find BOT_TOKEN in your environment')
+    const CHANNEL_ID = process.env.FORUM_ID
+    if (CHANNEL_ID === undefined) throw Error('Could not find CHANNEL_ID in your environment')
 
-
+    const rest = new REST({ version: '10' }).setToken(TOKEN)
+    try {
+      await rest.post(`/channels/${CHANNEL_ID}/threads`, {
+        body: {
+          name: 'Post mandado por ' + userPost.username,
+          auto_archive_duration: 60,
+          rate_limit_per_user: 0,
+          message: {
+            content: `Hello, ${userPost}!`
+          }
+        }
+      })
+        .then(console.log)
+    } catch (error) {
+      console.error(error)
+    }
     await interaction.deferUpdate()
   }
 

@@ -2,7 +2,7 @@ import { dirname, importx } from '@discordx/importer'
 import type { Interaction, Message } from 'discord.js'
 import { IntentsBitField } from 'discord.js'
 import { Client } from 'discordx'
-import { config } from 'dotenv'
+import('dotenv/config')
 
 export const bot = new Client({
   // To use only guild command
@@ -62,7 +62,7 @@ async function run (): Promise<void> | never {
 
   // Let's start the bot
   const TOKEN = process.env.BOT_TOKEN
-  if (!TOKEN) throw Error('Could not find BOT_TOKEN in your environment')
+  if (TOKEN === undefined) throw Error('Could not find BOT_TOKEN in your environment')
 
   // Log in with your bot TOKEN
   await bot.login(TOKEN)
