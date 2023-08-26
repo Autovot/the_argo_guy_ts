@@ -60,7 +60,8 @@ export class setupShop {
       )
     await interaction.reply({
       embeds: [setupEmbed],
-      components: [buttonRow]
+      components: [buttonRow],
+      ephemeral: true
     })
   }
 }

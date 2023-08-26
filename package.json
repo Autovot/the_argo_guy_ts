@@ -20,21 +20,21 @@
     "ts-standard-fix": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command .\\node_modules\\.bin\\ts-standard.ps1 --fix"
   },
   "dependencies": {
-    "@discordx/importer": "^1.1.10",
-    "@discordx/pagination": "^3.4.1",
-    "@discordx/utilities": "^5.2.1",
-    "discord.js": "^14.11.0",
-    "discordx": "^11.7.6"
+    "@discordx/importer": "1.2.3",
+    "@discordx/pagination": "3.4.1",
+    "@discordx/utilities": "5.2.1",
+    "discord.js": "14.12.1",
+    "discordx": "11.7.6"
   },
   "devDependencies": {
-    "@types/node": "^18.16.18",
-    "dotenv": "^16.3.1",
-    "eslint-plugin-react": "^7.32.2",
-    "nodemon": "^2.0.20",
-    "prettier": "^2.8.4",
-    "ts-node": "^10.9.1",
-    "ts-standard": "^12.0.2",
-    "typescript": "^4.9.5"
+    "@types/node": "20.5.0",
+    "dotenv": "16.3.1",
+    "eslint-plugin-react": "7.33.1",
+    "nodemon": "3.0.1",
+    "prettier": "3.0.1",
+    "ts-node": "10.9.1",
+    "ts-standard": "12.0.2",
+    "typescript": "5.1.6"
   },
   "engines": {
     "node": ">=16.0.0",
