@@ -23,18 +23,19 @@
     "@discordx/importer": "1.2.3",
     "@discordx/pagination": "3.4.1",
     "@discordx/utilities": "5.2.1",
-    "discord.js": "14.12.1",
-    "discordx": "11.7.6"
+    "discord.js": "14.13.0",
+    "discordx": "11.7.6",
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@types/node": "20.5.0",
+    "@types/node": "20.8.2",
     "dotenv": "16.3.1",
-    "eslint-plugin-react": "7.33.1",
+    "eslint-plugin-react": "7.33.2",
     "nodemon": "3.0.1",
-    "prettier": "3.0.1",
+    "prettier": "3.0.3",
     "ts-node": "10.9.1",
     "ts-standard": "12.0.2",
-    "typescript": "5.1.6"
+    "typescript": "5.2.2"
   },
   "engines": {
     "node": ">=16.0.0",
