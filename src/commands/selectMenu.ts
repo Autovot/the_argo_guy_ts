@@ -3,7 +3,7 @@ import { Discord, Slash, SelectMenuComponent } from 'discordx'
 
 @Discord()
 export class SelectMenu {
-  async handlerForum(interaction: ChannelSelectMenuInteraction<CacheType>) {
+  async handlerForum (interaction: ChannelSelectMenuInteraction<CacheType>) {
     const userPost = interaction.user
     const TOKEN = process.env.BOT_TOKEN
     if (TOKEN === undefined) throw Error('Could not find BOT_TOKEN in your environment')
@@ -26,24 +26,20 @@ export class SelectMenu {
     }
   }
 
-  @SelectMenuComponent({ id: "channel_menu" })
-  async selectMenu (interaction: ChannelSelectMenuInteraction ): Promise<void> {
+  @SelectMenuComponent({ id: 'channel_menu' })
+  async selectMenu (interaction: ChannelSelectMenuInteraction): Promise<void> {
     // Need call handlerForum in foro.ts for create post with ForumID
     this.handlerForum(interaction)
     await interaction.reply({ content: 'Forum ID set', ephemeral: true })
   }
 
-
-
-
   @Slash({ description: 'select' })
   async select (interaction: CommandInteraction): Promise<void> {
-
     // Create RoleSelectMenu
     const channelMenu = new ChannelSelectMenuBuilder({
       custom_id: 'channel_menu',
       placeholder: 'Select channel',
-      min_values: 1,
+      min_values: 1
 
     }).setChannelTypes(ChannelType.GuildForum)
 
@@ -57,7 +53,7 @@ export class SelectMenu {
     await interaction.reply({
       content: 'Select channel',
       components: [buttonRow],
-      ephemeral: true,
+      ephemeral: true
     })
   }
 }

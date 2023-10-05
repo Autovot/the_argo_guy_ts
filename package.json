@@ -7,7 +7,7 @@
   "main": "build/main.js",
   "scripts": {
     "build": "tsc",
-    "build:changelog": "npx @discordx/changelog --src src",
+    "build:changelog": "pnpx @discordx/changelog --src src",
     "dev": "ts-node-esm src/main.ts",
     "start": "node build/main.js",
     "watch": "nodemon --exec ts-node-esm src/main.ts",
@@ -15,9 +15,7 @@
     "dc-up": "docker compose up -d",
     "dc-down": "docker compose down",
     "dc-restart": "docker compose restart",
-    "dc-logs": "docker compose logs -f -t",
-    "ts-standard": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command .\\node_modules\\.bin\\ts-standard.ps1",
-    "ts-standard-fix": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command .\\node_modules\\.bin\\ts-standard.ps1 --fix"
+    "dc-logs": "docker compose logs -f -t"
   },
   "dependencies": {
     "@discordx/importer": "1.2.3",
