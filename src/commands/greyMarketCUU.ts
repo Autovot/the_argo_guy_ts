@@ -1,7 +1,6 @@
 import { ActionRowBuilder, ChannelSelectMenuBuilder, ChannelSelectMenuInteraction, ChannelType, CommandInteraction, EmbedBuilder, MessageActionRowComponentBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import { Discord, SelectMenuComponent, Slash, SlashGroup } from 'discordx'
 import { Test } from './exportTest.ts'
-import { title } from 'process'
 
 @Discord()
 @SlashGroup({ description: 'Setup', name: 'setup' })
