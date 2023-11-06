@@ -1,9 +1,6 @@
 ## build runner
 FROM node:lts-alpine as build-runner
 
-# Set DOTENV_ENV
-ENV DOTENV_KEY=${DOTENV_KEY}
-
 # Set temp directory
 WORKDIR /tmp/app
 
