@@ -12,7 +12,7 @@
     "start": "node build/main.js",
     "watch": "nodemon --exec ts-node-esm src/main.ts",
     "dc-build": "docker compose build",
-    "dc-up": "docker compose up -d",
+    "dc-up": "docker compose --env-file .env.production up -d",
     "dc-down": "docker compose down",
     "dc-restart": "docker compose restart",
     "dc-logs": "docker compose logs -f -t"
