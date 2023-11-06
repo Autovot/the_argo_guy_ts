@@ -1,6 +1,9 @@
 ## build runner
 FROM node:lts-alpine as build-runner
 
+# Set DOTENV_ENV
+ENV DOTENV_KEY=${DOTENV_KEY}
+
 # Set temp directory
 WORKDIR /tmp/app
 
@@ -31,8 +34,6 @@ RUN npm install --omit=dev
 
 # Move build files
 COPY --from=build-runner /tmp/app/build /app/build
-
-ENV DOTENV_KEY=${DOTENV_KEY}
 
 # Start bot
 CMD [ "npm", "run", "start" ]
