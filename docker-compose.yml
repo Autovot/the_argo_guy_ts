@@ -3,5 +3,5 @@ services:
   app:
     build: .
     command: node build/main.js
-    environment:
-      - DOTENV_KEY=${DOTENV_KEY}
+    # environment:
+    #   - DOTENV_KEY=${DOTENV_KEY}
