@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonInteraction, ButtonStyle, Channel, CommandInteraction, EmbedBuilder, MessageActionRowComponentBuilder, Role } from "discord.js";
+import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonInteraction, ButtonStyle, Channel, CommandInteraction, EmbedBuilder, MessageActionRowComponentBuilder, Role, PermissionFlagsBits } from "discord.js";
 import { ButtonComponent, Discord, Slash, SlashOption } from "discordx";
 
 @Discord()
@@ -23,7 +23,7 @@ export class GreyMarket {
 
 
   // Genarar
-  @Slash({ description: 'Grey market setup', name: 'grey_market' })
+  @Slash({ name: 'grey_market', description: 'Grey market setup'  , defaultMemberPermissions: PermissionFlagsBits.Administrator, })
   async grey_market(
     @SlashOption({
       description: 'Add ID Role',

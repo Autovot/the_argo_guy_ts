@@ -1,8 +1,13 @@
+import { PermissionFlagsBits } from "discord.js";
 import { Discord, Slash } from "discordx";
 
 @Discord()
 export class Translate {
-  @Slash({ description: 'reportar' })
+  @Slash({
+    defaultMemberPermissions: PermissionFlagsBits.Administrator,
+    description: 'reportar'
+   })
+  // 1170853288279814235
   async reportar(interaction: any): Promise<void> {
     // Responder con un embed y cuatro botones con url
     const embed = {
