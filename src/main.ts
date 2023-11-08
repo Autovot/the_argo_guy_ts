@@ -2,12 +2,10 @@ import { dirname, importx } from '@discordx/importer'
 import type { Interaction, Message } from 'discord.js'
 import { IntentsBitField } from 'discord.js'
 import { Client } from 'discordx'
-import('dotenv/config')
+import { Sequelize } from 'sequelize'
+import 'dotenv/config'
 
 export const bot = new Client({
-  // To use only guild command
-  // botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
-
   // Discord intents
   intents: [
     IntentsBitField.Flags.Guilds,
@@ -27,19 +25,8 @@ export const bot = new Client({
 })
 
 bot.once('ready', async () => {
-  // // Make sure all guilds are cached
-  // await bot.guilds.fetch();
-
   // Synchronize applications commands with Discord
   await bot.initApplicationCommands()
-
-  // // To clear all guild commands, uncomment this line,
-  // // This is useful when moving from guild commands to global commands
-  // // It must only be executed once
-  // //
-  // await bot.clearApplicationCommands(
-  //   ...bot.guilds.cache.map((g) => g.id)
-  // )
 
   console.log('Bot started')
 })
@@ -53,19 +40,46 @@ bot.on('messageCreate', async (message: Message) => {
 })
 
 async function run (): Promise<void> | never {
-  // The following syntax should be used in the commonjs environment
-  //
-  // await importx(__dirname + "/{events,commands}/**/*.{ts,js}");
+  // Get environment variables
+  const {
+    BOT_TOKEN,
+    PG_DATABASE,
+    PG_USER,
+    PG_PASSWORD,
+    PG_HOST,
+    PG_PORT
+  } = process.env;
+  if (!BOT_TOKEN) throw new Error('Could not find BOT_TOKEN in your environment');
+  if (!PG_DATABASE) throw new Error('Could not find PG_DATABASE in your environment');
+  if (!PG_USER) throw new Error('Could not find PG_USER in your environment');
+  if (!PG_PASSWORD) throw new Error('Could not find PG_PASSWORD in your environment');
+  if (!PG_HOST) throw new Error('Could not find PG_HOST in your environment');
+  if (!PG_PORT) throw new Error('Could not find PG_PORT in your environment');
 
-  // The following syntax should be used in the ECMAScript environment
-  await importx(`${dirname(import.meta.url)}/{events,commands}/**/*.{ts,js}`)
+  // Create connection to database
+  const sequelize = new Sequelize(PG_DATABASE, PG_USER, PG_PASSWORD, {
+    host: PG_HOST,
+    port: Number(PG_PORT),
+    dialect: 'postgres',
+    logging: false,
+    storage: 'database.postgres'
+  });
 
-  // Let's start the bot
-  const TOKEN = process.env.BOT_TOKEN
-  if (TOKEN === undefined) throw Error('Could not find BOT_TOKEN in your environment')
+  // Connect to database
+  try {
+    await sequelize.authenticate();
+    console.info('database >> Connection has been established successfully');
+  }
+  catch (error) {
+    console.error('database >> Unable to connect to the database:', error);
+  }
+
+
+  // Load files
+  await importx(`${dirname(import.meta.url)}/{events,commands}/**/*.{ts,js}`);
 
   // Log in with your bot TOKEN
-  await bot.login(TOKEN)
+  await bot.login(BOT_TOKEN);
 }
 
 await run()

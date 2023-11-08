@@ -3,5 +3,11 @@ services:
   app:
     build: .
     command: node build/main.js
+    restart: unless-stopped
     environment:
       - BOT_TOKEN=${BOT_TOKEN}
+      - PG_HOST=${PG_HOST}
+      - PG_PORT=${PG_PORT}
+      - PG_USER=${PG_USER}
+      - PG_PASSWORD=${PG_PASSWORD}
+      - PG_DATABASE=${PG_DATABASE}

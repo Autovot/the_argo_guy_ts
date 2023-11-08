@@ -1,5 +1,7 @@
+import { triggerAsyncId } from "async_hooks";
 import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonInteraction, ButtonStyle, Channel, CommandInteraction, EmbedBuilder, MessageActionRowComponentBuilder, Role, PermissionFlagsBits } from "discord.js";
 import { ButtonComponent, Discord, Slash, SlashOption } from "discordx";
+
 
 @Discord()
 export class GreyMarket {
@@ -70,8 +72,13 @@ export class GreyMarket {
 
 
     //interaction
+    // Cuando se genera el comando, se guarda el rol y el canal para usarlo en el click del boton en una base de datos
     this.roleToAdd = role
     this.chanelToSend = channel_to_send.url as string
+
+    // database is connected in main.ts
+
+
     await interaction.reply({
       embeds: [embedGreyTerms],
       components: [buttonRow],
