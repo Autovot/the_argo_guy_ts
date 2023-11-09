@@ -1,0 +1,21 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model buttons {
+  id          Int    @id @default(autoincrement()) @db.Integer
+  server_id   String
+  channel_id  String
+  message_id  String @unique
+  button_id   String @db.VarChar(100)
+  role_id     String
+  redirect_id String
+}

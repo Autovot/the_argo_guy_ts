@@ -1,31 +1,42 @@
-import { triggerAsyncId } from "async_hooks";
-import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonInteraction, ButtonStyle, Channel, CommandInteraction, EmbedBuilder, MessageActionRowComponentBuilder, Role, PermissionFlagsBits } from "discord.js";
-import { ButtonComponent, Discord, Slash, SlashOption } from "discordx";
-
+import { ActionRowBuilder, ApplicationCommandOptionType, ButtonBuilder, ButtonInteraction, ButtonStyle, Channel, CommandInteraction, EmbedBuilder, MessageActionRowComponentBuilder, Role, PermissionFlagsBits } from 'discord.js'
+import { ButtonComponent, Discord, Slash, SlashOption } from 'discordx'
+import { PrismaClient } from '@prisma/client'
 
 @Discord()
 export class GreyMarket {
-  roleToAdd: Role | undefined
-  chanelToSend: string = ''
-
-
   // Catch button click
   @ButtonComponent({ id: 'grey_terms' })
-  async handlerGreyTerms (interaction: ButtonInteraction): Promise<void> {
+  async handlerGreyTerms(interaction: ButtonInteraction): Promise<void> {
     // Message and add role (role passed in @SlashOption on @Slash(grey_market)) to user
     const userPost = interaction.user
+
+    // get data from database
+    const prisma = new PrismaClient()
+    const buttonDB = await prisma.buttons.findUnique({
+      where: {
+        message_id: interaction.message.id,
+        button_id: 'grey_terms'
+      }
+    }).catch(async (error) => {
+      console.log(error)
+      await prisma.$disconnect()
+    })
+    console.log(buttonDB)
+
     // get member
     const member = interaction.guild?.members.cache.find(member => member.id === userPost.id)
     // set message
-    const responseMessage = `¡Gracias por aceptar las condiciones, ${userPost}! Ahora puedes ver el canal de \n${this.chanelToSend}`
+    const responseMessage = `¡Gracias por aceptar las condiciones, ${userPost}! Ahora puedes ver el canal de \n<#${buttonDB?.redirect_id}>`
     // add role
-    await member?.roles.add(this.roleToAdd as unknown as string)
+    await member?.roles.add(buttonDB?.role_id as string)
     await interaction.reply({ content: responseMessage, ephemeral: true })
+
+    // Close connection
+    await prisma.$disconnect()
   }
 
-
   // Genarar
-  @Slash({ name: 'grey_market', description: 'Grey market setup'  , defaultMemberPermissions: PermissionFlagsBits.Administrator, })
+  @Slash({ name: 'grey_market', description: 'Grey market setup', defaultMemberPermissions: PermissionFlagsBits.Administrator })
   async grey_market(
     @SlashOption({
       description: 'Add ID Role',
@@ -36,13 +47,13 @@ export class GreyMarket {
     role: Role,
     @SlashOption({
       description: 'Add ID Channel to send on response',
-      name: 'channel_to_send',
+      name: 'redirect',
       required: true,
       type: ApplicationCommandOptionType.Channel
     })
-    channel_to_send: Channel,
+    redirect: Channel,
     interaction: CommandInteraction
-    ): Promise<void> {
+  ): Promise<void> {
     // Button
     const buttonGreyTerms: ButtonBuilder = new ButtonBuilder()
       .setCustomId('grey_terms')
@@ -70,18 +81,28 @@ export class GreyMarket {
       .setDescription(`${linea1}\n\n${linea2}\n\n${linea3}\n\n${linea4}\n\n${linea5}\n\n${linea6}`)
       .setFooter({ text: footer })
 
-
-    //interaction
-    // Cuando se genera el comando, se guarda el rol y el canal para usarlo en el click del boton en una base de datos
-    this.roleToAdd = role
-    this.chanelToSend = channel_to_send.url as string
-
-    // database is connected in main.ts
-
-
     await interaction.reply({
       embeds: [embedGreyTerms],
-      components: [buttonRow],
+      components: [buttonRow]
+    })
+
+    // Save in database
+    const prisma = new PrismaClient()
+    const reply = await interaction.fetchReply()
+    const buttonDB = await prisma.buttons.create({
+      data: {
+        server_id: interaction.guildId as string,
+        channel_id: interaction.channelId,
+        message_id: reply.id,
+        button_id: 'grey_terms',
+        role_id: role.id,
+        redirect_id: redirect.id
+      },
+    }).then(async () => {
+      await prisma.$disconnect()
+    }).catch(async (error) => {
+      console.log(error)
+      await prisma.$disconnect()
     })
   }
 }
