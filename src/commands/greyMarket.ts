@@ -17,7 +17,7 @@ export class GreyMarket {
         message_id: interaction.message.id,
         button_id: 'grey_terms'
       }
-    }).catch(async (error) => {
+    }).catch(async (error: Error) => {
       console.log(error)
       await prisma.$disconnect()
     })
@@ -100,7 +100,7 @@ export class GreyMarket {
       },
     }).then(async () => {
       await prisma.$disconnect()
-    }).catch(async (error) => {
+    }).catch(async (error: Error) => {
       console.log(error)
       await prisma.$disconnect()
     })
