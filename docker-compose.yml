@@ -2,13 +2,14 @@ version: "3"
 services:
   app:
     build: .
+    container_name: argo-bot
     command: node build/main.js
     restart: unless-stopped
     environment:
       - BOT_TOKEN=${BOT_TOKEN}
       - DATABASE_URL=${DATABASE_URL}
-    # networks:
-    #   - argo-net
-# networks:
-#   argo-net:
-#     external: true
+    networks:
+      - argo-net
+networks:
+  argo-net:
+    external: true
